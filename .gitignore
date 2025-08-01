@@ -1,0 +1,17 @@
+# Ignore Python virtual environment
+.venv/
+# Ignore VS Code settings
+.vscode/
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.db
+*.sqlite3
+# OS generated files
+.DS_Store
+Thumbs.db
