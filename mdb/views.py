@@ -1,3 +1,42 @@
+from .forms import MarkFilesDeletedForm
+from .models import File
+from django.contrib import messages
+def mark_files_deleted(request):
+    form = MarkFilesDeletedForm(request.POST or None)
+    message = None
+    warning = None
+    if request.method == 'POST' and form.is_valid():
+        scanNum = form.cleaned_data.get('scanNum')
+        if not scanNum and not request.POST.get('confirm_all_scans'):
+            warning = "This will mark all files in the project as deleted. Are you sure you want to continue?"
+        else:
+            files = form.get_files()
+            updated_count = 0
+            affected_projects = set()
+            affected_scans = set()
+            affected_banks = set()
+            for f in files:
+                f.deleted = True
+                f.save()
+                updated_count += 1
+                if hasattr(f, 'scan') and f.scan:
+                    affected_projects.add(f.scan.projectId)
+                    affected_scans.add(f.scan.scanNum)
+                if hasattr(f, 'bank') and f.bank:
+                    affected_banks.add(f.bank.name)
+            if updated_count == 0:
+                message = { 'text': "No files matched", 'color': "red" }
+            else:
+                details = []
+                if affected_projects:
+                    details.append(f"Projects: {', '.join(str(p) for p in affected_projects)}")
+                if affected_scans:
+                    details.append(f"Scans: {', '.join(str(s) for s in affected_scans)}")
+                if affected_banks:
+                    details.append(f"Banks: {', '.join(str(b) for b in affected_banks)}")
+                detail_str = "; ".join(details)
+                messages.success(request, f"Marked {updated_count} files as deleted. {detail_str}")
+    return render(request, 'mdb/mark_files_deleted.html', {'form': form, 'message': message, 'warning': warning})
 from django.shortcuts import redirect
 from .forms import ProcessingStateForm
 def set_processing_state(request):

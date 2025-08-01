@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'mdb/style.css' %}">
+<h1>Welcome to djangoTest</h1>
+<p>This is the landing page. Below are the available URLs and their descriptions:</p>
+<ul>
+  {% for item in urls %}
+    <li>
+      <a href="{{ item.url }}"><strong>{{ item.name }}</strong></a>: {{ item.desc }}
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}
