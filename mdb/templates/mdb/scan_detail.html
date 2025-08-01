@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'mdb/style.css' %}">
+  <h1>Scan Detail</h1>
+  <table>
+    <tr><th>ID</th><td>{{ scan.id }}</td></tr>
+    <tr><th>Project ID</th><td>{{ scan.projectId }}</td></tr>
+    <tr><th>Backend</th><td>{{ scan.backend }}</td></tr>
+    <tr><th>Receiver</th><td>{{ scan.receiver }}</td></tr>
+    <tr><th>Mode</th><td>{{ scan.mode }}</td></tr>
+    <tr><th>Scan Number</th><td>{{ scan.scanNum }}</td></tr>
+    <tr><th>Start Time</th><td>{{ scan.startTime }}</td></tr>
+    <tr><th>End Time</th><td>{{ scan.endTime }}</td></tr>
+    <tr><th>Duration</th><td>{{ scan.duration }}</td></tr>
+  </table>
+  <h2>Files</h2>
+  <table>
+    <tr><th>Filename</th><th>Bank</th><th>Size</th><th>Type</th><th>Created</th></tr>
+    {% for file in files %}
+    <tr>
+      <td>{{ file.filename }}</td>
+      <td>{{ file.bank }}</td>
+      <td>{{ file.size }}</td>
+      <td>{{ file.fileType }}</td>
+      <td>{{ file.creationTime }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">No files found.</td></tr>
+    {% endfor %}
+  </table>
+
+  <h2>Quality Checks</h2>
+  <table>
+    <tr><th>ID</th><th>Result</th><th>Created</th></tr>
+    {% for qc in qualitychecks %}
+    <tr>
+      <td>{{ qc.id }}</td>
+      <td>{{ qc.result }}</td>
+      <td>{{ qc.created }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">No quality checks found.</td></tr>
+    {% endfor %}
+  </table>
+
+  <h2>Processing</h2>
+  <table>
+    <tr><th>ID</th><th>Type</th><th>State</th><th>Start Time</th></tr>
+    {% for p in processing %}
+    <tr>
+      <td><a href="{% url 'processing-detail' p.id %}">{{ p.id }}</a></td>
+      <td>{{ p.processingType }}</td>
+      <td>{{ p.processedState }}</td>
+      <td>{{ p.processStartTime }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No processing found.</td></tr>
+    {% endfor %}
+  </table>
+
+  <p><a href="{% url 'scan-list' %}">Back to scan list</a></p>
+{% endblock %}

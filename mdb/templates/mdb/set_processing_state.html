@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'mdb/style.css' %}">
+<h1>Set Processing State</h1>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% if warning %}
+    <p style="color: orange; font-weight: bold;">{{ warning }}</p>
+    <button type="submit" name="confirm_all_scans" value="1">Yes, continue</button>
+    <button type="button" onclick="document.querySelector('form').reset(); window.location.href=window.location.pathname;">Cancel</button>
+  {% else %}
+    <button type="submit">Update</button>
+  {% endif %}
+</form>
+{% if message %}
+  <p style="color: {{ message.color }};">{{ message.text }}</p>
+{% endif %}
+{% endblock %}

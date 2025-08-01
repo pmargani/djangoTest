@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'mdb/style.css' %}">
+  <h1>Processing Detail</h1>
+  <table>
+    <tr><th>ID</th><td>{{ processing.id }}</td></tr>
+    <tr><th>Scan</th><td>{{ processing.scan }}</td></tr>
+    <tr><th>Bank</th><td>{{ processing.bank }}</td></tr>
+    <tr><th>Type</th><td>{{ processing.processingType }}</td></tr>
+    <tr><th>State</th><td>{{ processing.processedState }}</td></tr>
+    <tr><th>Start Time</th><td>{{ processing.processStartTime }}</td></tr>
+  </table>
+  <p><a href="{% url 'scan-detail' processing.scan.pk %}">Back to scan detail</a></p>
+{% endblock %}

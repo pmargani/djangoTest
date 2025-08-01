@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'mdb/style.css' %}">
+  <h1>Scans</h1>
+  <form method="get">
+    <label for="projectId">Project ID:</label>
+    <input type="text" name="projectId" id="projectId" value="{{ request.GET.projectId }}">
+    <button type="submit">Filter</button>
+  </form>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Project ID</th>
+        <th>Backend</th>
+        <th>Receiver</th>
+        <th>Mode</th>
+        <th>Scan Number</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for scan in scans %}
+      <tr>
+        <td>{{ scan.id }}</td>
+        <td>{{ scan.projectId }}</td>
+        <td>{{ scan.backend }}</td>
+        <td>{{ scan.receiver }}</td>
+        <td>{{ scan.mode }}</td>
+        <td><a href="{% url 'scan-detail' scan.pk %}">{{ scan.scanNum }}</a></td>
+        <td>{{ scan.startTime }}</td>
+        <td>{{ scan.endTime }}</td>
+        <td>{{ scan.duration }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="9">No scans found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
